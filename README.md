@@ -5,6 +5,11 @@
 $ npm i ipstackgeo-js
 ```
 
+[![Downloads](https://img.shields.io/npm/dw/ipstackgeo-js)](https://www.npmjs.com/package/ipstackgeo-js)
+[![GitHub stars](https://img.shields.io/github/stars/nathan-fiscaletti/ipstackgeo-js)](https://github.com/nathan-fiscaletti/ipstackgeo-js/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/nathan-fiscaletti/ipstackgeo-js)](https://github.com/nathan-fiscaletti/ipstackgeo-js/issues)
+[![GitHub license](https://img.shields.io/github/license/nathan-fiscaletti/ipstackgeo-js)](https://github.com/nathan-fiscaletti/ipstackgeo-js/blob/main/LICENSE)
+
 Learn more about IPStack here: [ipstack.net](https://ipstack.com/product)
 
 [Looking for the Python version?](https://github.com/nathan-fiscaletti/ipstackgeo-py)
