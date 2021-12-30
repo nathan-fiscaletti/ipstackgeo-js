@@ -1,0 +1,17 @@
+{
+    "name": "ipstackgeo-js",
+    "description": "A simple library used to interface with an IPStack Geo API.",
+    "version": "1.0",
+    "author": {
+        "name": "Nathan Fiscaletti",
+        "email": "nate.fiscaletti@gmail.com"
+    },
+    "license": "MIT",
+    "keywords": [ "geo", "ipstack", "api", "location", "ip" ],
+    "homepage": "https://github.com/nathan-fiscaleti/ipstackgeo-js",
+    "repository": "github:nathan-fiscaletti/ipstackgeo-js",
+    "dependencies": {
+        "https": "latest",
+        "http": "latest"
+    }
+}
