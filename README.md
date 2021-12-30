@@ -7,7 +7,9 @@ $ npm i ipstackgeo-js
 
 Learn more about IPStack here: [ipstack.net](https://ipstack.com/product)
 
-[Looking for the Python version?](https://github.com/nathan-fiscaletti/ipstackgeo-py) | [Looking for the PHP version?](https://github.com/nathan-fiscaletti/ipstackgeo-php)
+[Looking for the Python version?](https://github.com/nathan-fiscaletti/ipstackgeo-py)
+
+[Looking for the PHP version?](https://github.com/nathan-fiscaletti/ipstackgeo-php)
 
 ### Features
 * Retrieve the Geo Location data for any IP address.
