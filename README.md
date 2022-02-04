@@ -5,6 +5,7 @@
 $ npm i ipstackgeo-js
 ```
 
+[![Sponsor Me!](https://img.shields.io/badge/%F0%9F%92%B8-Sponsor%20Me!-blue)](https://github.com/sponsors/nathan-fiscaletti)
 [![Downloads](https://img.shields.io/npm/dw/ipstackgeo-js)](https://www.npmjs.com/package/ipstackgeo-js)
 [![GitHub stars](https://img.shields.io/github/stars/nathan-fiscaletti/ipstackgeo-js)](https://github.com/nathan-fiscaletti/ipstackgeo-js/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/nathan-fiscaletti/ipstackgeo-js)](https://github.com/nathan-fiscaletti/ipstackgeo-js/issues)
