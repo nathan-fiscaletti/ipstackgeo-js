@@ -120,7 +120,7 @@ class GeoLookup extends Promise {
     }
 
     get [Symbol.toStringTag]() {
-        return 'MyPromise';
+        return 'GeoLookup';
     }
 }
 
