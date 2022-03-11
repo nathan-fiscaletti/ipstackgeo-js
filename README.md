@@ -31,7 +31,7 @@ Learn more about IPStack here: [ipstack.net](https://ipstack.com/product)
 ```js
 const geoLookup = require(`ipstackgeo-js`)('<YOUR-API-KEY>');
 
-geoLookup.forSelf().get(
+geoLookup.forSelf().then(
     res => console.log(res),
     err => console.log(err)
 );
@@ -56,7 +56,7 @@ const geoLookup = require(`ipstackgeo-js`)('<YOUR-API-KEY>');
 // This function will work with hostnames
 // or IP addresses.
 geoLookup.forIps('github.com')
-    .get(
+    .then(
         (res) => console.log(res),
         (err) => console.log(err)
     );
@@ -64,7 +64,7 @@ geoLookup.forIps('github.com')
 
 #### Look up own location
 ```js
-geoLookup.forSelf().get(
+geoLookup.forSelf().then(
     (res) => console.log(res),
     (err) => console.log(err)
 );
@@ -81,7 +81,7 @@ There are also a few other useful features built into this library and the IPSta
 
    ```js
    const ips = ['google.com', 'github.com', '1.1.1.1'];
-   geoLookup.forIps(...ips).get(
+   geoLookup.forIps(...ips).then(
        (res) => console.log(res),
        (err) => console.log(err)
    );
@@ -95,7 +95,7 @@ There are also a few other useful features built into this library and the IPSta
    ```js
    geoLookup.forIps('1.1.1.1')
        .lookupHostname()
-       .get(
+       .then(
            (res) => console.log(res.hostname),
            (err) => console.log(err)
        );
@@ -114,7 +114,7 @@ There are also a few other useful features built into this library and the IPSta
    ```js
    geoLookup.forIps('1.1.1.1')
        .assessSecurity()
-       .get(
+       .then(
            (res) => console.log(res),
            (err) => console.log(err)
        );
@@ -130,7 +130,7 @@ There are also a few other useful features built into this library and the IPSta
    ```js
    geoLookup.forSelf()
        .language('en')
-       .get(
+       .then(
            (res) => console.log(res),
            (err) => console.log(err)
        );
@@ -144,7 +144,7 @@ There are also a few other useful features built into this library and the IPSta
        .useHttps()
        /// Configure the timeout for requests
        .timeout(15000)
-       .get(
+       .then(
            (res) => console.log(res),
            (err) => console.log(err)
        );
@@ -158,7 +158,7 @@ There are also a few other useful features built into this library and the IPSta
    ```js
    geoLookup.forIp()
        .jsonp('someSpecialFunctionName')
-       .get(
+       .then(
            // When using jsonp(), res will be a string instead of an object.
            (res) => console.log(res),
            (err) => console.log(err)

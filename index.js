@@ -3,116 +3,134 @@ const http = require(`http`);
 
 const HOSTNAME = 'api.ipstack.com';
 
-class GeoLookup {
-    #apiAccessKey; #ips; #https; #lookupHostname;
-    #assessSecurity; #jsonp; #language; #timeout;
+function _ips(...ips) {
+    this._ips = ips;
+    return this;
+}
 
-    constructor(apiAccessKey, ...ips) {
-        this.#apiAccessKey = apiAccessKey;
-        this.#ips = ips;
+function _setKey(apiAccessKey) {
+    this._apiAccessKey = apiAccessKey;
+    return this;
+}
 
-        this.#https = false;
-        this.#lookupHostname = false;
-        this.#assessSecurity = false;
-        this.#jsonp = undefined;
-        this.#language = 'en';
-        this.#timeout = 10000;
+function _perform(resolve, reject) {
+    const searchParams = new URLSearchParams({
+        access_key: this._apiAccessKey,
+        output: 'json',
+        hostname: this._lookupHostname ? 1 : 0,
+        security: this._assessSecurity ? 1 : 0,
+        language: this._language
+    });
+
+    const path = this._ips.length == 0 ? 'check' : this._ips.join(',');
+    const proto = this._https ? 'https' : 'http';
+    const query = searchParams.toString();
+    const jsonp = this._jsonp ? `&callback=${this._jsonp}` : '';
+
+    const reqUrl = `${proto}://${HOSTNAME}/${path}?${query}${jsonp}`;
+    
+
+    ((this._https) ? https : http).get(reqUrl, {timeout: this._timeout}, res => {
+        if (res.statusCode !== 200) {
+            reject(new Error(`${res.statusCode} ${res.statusMessage}`));
+            return;
+        }
+
+        let data = '';
+        res.on('data', chunk => {
+            data += chunk;
+        });
+
+        res.on('end', () => {
+            if (this._jsonp) {
+                resolve(data);
+                return;
+            }
+
+            let jsonData;
+            try {
+                jsonData = JSON.parse(data);
+            } catch (err) {
+                reject(err);
+                return;
+            }
+
+            if (jsonData.error) {
+                reject(new Error(jsonData.error.info));
+                return;
+            }
+
+            resolve(jsonData);
+        });
+    }).on('error', (err) => {
+        reject(err);
+    });
+}
+
+class GeoLookup extends Promise {
+    _apiAccessKey; 
+    _ips = [];
+    _https = false;
+    _lookupHostname = false;
+    _assessSecurity = false; 
+    _jsonp = undefined; 
+    _language = 'en';
+    _timeout = 10000;
+
+    constructor() {
+        super((resolve, reject) => {
+            setTimeout(() => {
+                _perform.call(this, resolve, reject);
+            }, 0);
+        });
     }
 
     useHttps() {
-        this.#https = true;
+        this._https = true;
         return this;
     }
 
     lookupHostname() {
-        this.#lookupHostname = true;
+        this._lookupHostname = true;
         return this;
     }
 
     assessSecurity() {
-        this.#assessSecurity = true;
+        this._assessSecurity = true;
         return this;
     }
 
     language(val) {
-        this.#language = val;
+        this._language = val;
         return this;
     }
 
     jsonp(functionName) {
-        this.#jsonp = functionName;
+        this._jsonp = functionName;
         return this;
     }
 
     timeout(ms) {
-        this.#timeout = ms;
+        this._timeout = ms;
         return this;
     }
 
-    get(success, error) {
-        return new Promise((resolve, reject) => {
-            const searchParams = new URLSearchParams({
-                access_key: this.#apiAccessKey,
-                output: 'json',
-                hostname: this.#lookupHostname ? 1 : 0,
-                security: this.#assessSecurity ? 1 : 0,
-                language: this.#language
-            });
+    static get [Symbol.species]() {
+        return Promise;
+    }
 
-            const path = this.#ips.length == 0 ? 'check' : this.#ips.join(',');
-            const proto = this.#https ? 'https' : 'http';
-            const query = searchParams.toString();
-            const jsonp = this.#jsonp ? `&callback=${this.#jsonp}` : '';
-
-            const reqUrl = `${proto}://${HOSTNAME}/${path}?${query}${jsonp}`;
-            
-
-            ((this.#https) ? https : http).get(reqUrl, {timeout: this.#timeout}, res => {
-                if (res.statusCode !== 200) {
-                    reject(new Error(`${res.statusCode} ${res.statusMessage}`));
-                    return;
-                }
-
-                let data = '';
-                res.on('data', chunk => {
-                    data += chunk;
-                });
-
-                res.on('end', () => {
-                    if (this.#jsonp) {
-                        resolve(data);
-                        return;
-                    }
-
-                    let jsonData;
-                    try {
-                        jsonData = JSON.parse(data);
-                    } catch (err) {
-                        reject(err);
-                        return;
-                    }
-
-                    if (jsonData.error) {
-                        reject(new Error(jsonData.error.info));
-                        return;
-                    }
-
-                    resolve(jsonData);
-                });
-            }).on('error', (err) => {
-                reject(err);
-            });
-        }).then(success, error);
+    get [Symbol.toStringTag]() {
+        return 'MyPromise';
     }
 }
 
 module.exports = (apiAccessKey) => {
     return {
-        forIps: (...ips) => {
-            return new GeoLookup(apiAccessKey, ...ips);
+        forIps: function (...ips) {
+            return _ips.call(this.forSelf(), ips);
         },
-        forSelf: () => {
-            return new GeoLookup(apiAccessKey);
+        forSelf: function () {
+            return _setKey.call(new GeoLookup(), apiAccessKey);
         }
     };
 }
